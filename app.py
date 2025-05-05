@@ -160,25 +160,28 @@ for ticker, data_item in nifty200_data.items():
             print(f"Error converting data for {ticker}: {e}")
             nifty200_data[ticker] = pd.DataFrame() # Set to empty DataFrame on error
 
-if nifty200_data: # Check if the dictionary itself is not empty
+if nifty200_data:
     st.subheader("Nifty 200 Overview")
     nifty_index_data = yf.download("^NSEI", period="1d", interval="1d")
-    if not nifty_index_data.empty:
+    if isinstance(nifty_index_data, pd.DataFrame) and not nifty_index_data.empty and 'Close' in nifty_index_data.columns:
         latest_nifty = nifty_index_data['Close'].iloc[-1]
         previous_nifty = nifty_index_data['Close'].iloc[-2] if len(nifty_index_data) > 1 else None
 
         change_nifty = (latest_nifty - previous_nifty) if previous_nifty is not None else 0
         change_percent_nifty = ((change_nifty / previous_nifty) * 100) if previous_nifty is not None and previous_nifty != 0 else 0
 
-        latest_nifty_value = latest_nifty.iloc[0] if isinstance(latest_nifty, pd.Series) and not latest_nifty.empty else latest_nifty
-        change_nifty_value = change_nifty.iloc[0] if isinstance(change_nifty, pd.Series) and not change_nifty.empty else change_nifty
-        change_percent_nifty_value = change_percent_nifty.iloc[0] if isinstance(change_percent_nifty, pd.Series) and not change_percent_nifty.empty else change_percent_nifty
+        latest_nifty_value = latest_nifty if isinstance(latest_nifty, (int, float)) else latest_nifty.iloc[0] if not nifty_index_data['Close'].empty else None
+        change_nifty_value = change_nifty if isinstance(change_nifty, (int, float)) else change_nifty.iloc[0] if previous_nifty is not None and not nifty_index_data['Close'].empty else None
+        change_percent_nifty_value = change_percent_nifty if isinstance(change_percent_nifty, (int, float)) else change_percent_nifty.iloc[0] if previous_nifty is not None and previous_nifty != 0 and not nifty_index_data['Close'].empty else None
 
-        st.metric(
-            "Nifty 200",
-            f"{latest_nifty_value:.2f}",
-            f"{change_nifty_value:.2f} ({change_percent_nifty_value:.2f}%)" if previous_nifty is not None else None,
-        )
+        if latest_nifty_value is not None:
+            st.metric(
+                "Nifty 200",
+                f"{latest_nifty_value:.2f}",
+                f"{change_nifty_value:.2f} ({change_percent_nifty_value:.2f}%)" if previous_nifty is not None and latest_nifty_value is not None else None,
+            )
+        else:
+            st.warning("Could not display Nifty 200 overview.")
     else:
         st.warning("Could not fetch Nifty 200 index data.")
 
@@ -196,7 +199,7 @@ if nifty200_data: # Check if the dictionary itself is not empty
     st.subheader("Nifty 200 Stocks Meeting Criteria")
     meeting_criteria_stocks = []
     for ticker, df in nifty200_data.items():
-        if isinstance(df, pd.DataFrame) and not df.empty:
+        if isinstance(df, pd.DataFrame) and not df.empty and 'Close' in df.columns and 'MACD' in df.columns and 'RSI' in df.columns and 'EMA_20' in df.columns and 'SMA_20' in df.columns and 'BB_upper' in df.columns:
             indicators = calculate_indicators(df.copy())
             if not indicators.empty and len(indicators) > 0 and \
                indicators['MACD'].iloc[-1] > 0 and \
