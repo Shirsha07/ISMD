@@ -160,7 +160,7 @@ for ticker, data_item in nifty200_data.items():
             print(f"Error converting data for {ticker}: {e}")
             nifty200_data[ticker] = pd.DataFrame() # Set to empty DataFrame on error
 
-if nifty200_data:
+if bool(nifty200_data): # Explicitly check if the dictionary is non-empty
     st.subheader("Nifty 200 Overview")
     nifty_index_data = yf.download("^NSEI", period="1d", interval="1d")
     if isinstance(nifty_index_data, pd.DataFrame) and not nifty_index_data.empty and 'Close' in nifty_index_data.columns:
