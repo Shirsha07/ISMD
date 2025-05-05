@@ -41,9 +41,11 @@ def get_nifty200_tickers():
 
 def fetch_data(tickers, period="1y", interval="1d"):
     data = yf.download(tickers, period=period, interval=interval, group_by="ticker")
+    print(f"Shape of fetched data: {data.shape}") # Debugging
     return data
 
 def calculate_indicators(df):
+    print(f"Shape of df in calculate_indicators: {df.shape}") # Debugging
     if df.empty:
         return df
     df['MACD'] = ta.trend.MACD(df['Close']).macd()
@@ -57,14 +59,17 @@ def calculate_indicators(df):
     return df
 
 def check_upper_band_touch(df):
+    print(f"Shape of df in check_upper_band_touch: {df.shape}") # Debugging
     if df.empty or df['Close'].isnull().any() or df['BB_upper'].isnull().any():
         return False
     return df['Close'].iloc[-1] >= df['BB_upper'].iloc[-1]
 
 def get_top_gainers_losers(data):
+    print(f"Type of data in get_top_gainers_losers: {type(data)}") # Debugging
     latest_data = {}
     previous_data = {}
     for ticker, df in data.items():
+        print(f"Shape of df for {ticker} in get_top_gainers_losers: {df.shape}") # Debugging
         if not df.empty and 'Close' in df.columns:
             if len(df) >= 2 and not df.iloc[-1]['Close'] is None and not df.iloc[-2]['Close'] is None:
                 latest_data[ticker] = df.iloc[-1]['Close']
@@ -112,6 +117,7 @@ def plot_indicators(df, ticker):
 
 def display_security_info(ticker):
     stock_data = yf.download(ticker, period="1y", interval="1d")
+    print(f"Shape of stock_data for {ticker} in display_security_info: {stock_data.shape}") # Debugging
     if not stock_data.empty:
         st.subheader(f"Security: {ticker.split('.')[0]}") # Display without '.NS'
         latest_info = stock_data.iloc[-1]
@@ -144,9 +150,12 @@ st.title("Interactive Nifty 200 Stock Market Dashboard")
 nifty200_tickers = get_nifty200_tickers()
 nifty200_data = fetch_data(nifty200_tickers, period="3mo", interval="1d") # Adjust period as needed
 
+print(f"Shape of nifty200_data after fetching: {nifty200_data.shape}") # Debugging
+
 if not nifty200_data.empty:
     st.subheader("Nifty 200 Overview")
     nifty_index_data = yf.download("^NSEI", period="1d", interval="1d")
+    print(f"Shape of nifty_index_data: {nifty_index_data.shape}") # Debugging
     if not nifty_index_data.empty:
         latest_nifty = nifty_index_data['Close'].iloc[-1]
         previous_nifty = nifty_index_data['Close'].iloc[-2] if len(nifty_index_data) > 1 else None
@@ -157,6 +166,8 @@ if not nifty200_data.empty:
         st.warning("Could not fetch Nifty 200 index data.")
 
     gainers_df, losers_df = get_top_gainers_losers(nifty200_data)
+    print(f"Shape of gainers_df: {gainers_df.shape}") # Debugging
+    print(f"Shape of losers_df: {losers_df.shape}") # Debugging
 
     col1, col2 = st.columns(2)
     with col1:
@@ -170,8 +181,10 @@ if not nifty200_data.empty:
     st.subheader("Nifty 200 Stocks Meeting Criteria")
     meeting_criteria_stocks = []
     for ticker, df in nifty200_data.items():
+        print(f"Shape of df for {ticker} before indicators: {df.shape}") # Debugging
         if not df.empty:
             indicators = calculate_indicators(df.copy())
+            print(f"Shape of indicators for {ticker}: {indicators.shape}") # Debugging
             if not indicators.empty and len(indicators) > 0 and \
                indicators['MACD'].iloc[-1] > 0 and \
                indicators['RSI'].iloc[-1] > 50 and \
