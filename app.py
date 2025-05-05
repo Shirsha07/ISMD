@@ -194,13 +194,3 @@ if not nifty200_data.empty:
         st.write(meeting_criteria_stocks)
     else:
         st.info("No stocks currently meet all the specified criteria based on the last available data.")
-
-    st.sidebar.header("Security Analysis")
-    selected_ticker = st.sidebar.selectbox("Choose a Nifty 200 Stock", [""] + [t.split('.')[0] for t in nifty200_tickers]) # Display without '.NS'
-
-    if selected_ticker:
-        display_security_info(selected_ticker + ".NS")
-
-else:
-    st.error("Failed to fetch data for Nifty 200 stocks.")
-          
