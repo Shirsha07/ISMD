@@ -126,7 +126,7 @@ def display_security_info(ticker):
         previous_info = stock_data.iloc[-2] if len(stock_data) > 1 else None
         change = latest_info['Close'] - previous_info['Close'] if previous_info is not None else 0
         change_percent = (change / previous_info['Close']) * 100 if previous_info is not None and previous_info['Close'] != 0 else 0
-        st.metric("Latest Price", f"{latest_info['Close']:.2f} INR", f"{change:.2f} ({change_percent:.2f}%)" if previous_info is not None else None)
+        st.metric("Latest Price", f"{latest_info['Close'].iloc[-1]:.2f} INR", f"{change:.2f} ({change_percent:.2f}%)" if previous_info is not None else None)
 
         col1, col2, col3 = st.columns(3)
         col1.metric("High", f"{latest_info['High']:.2f} INR")
