@@ -157,13 +157,19 @@ if not nifty200_data.empty:
     nifty_index_data = yf.download("^NSEI", period="1d", interval="1d")
     print(f"Shape of nifty_index_data: {nifty_index_data.shape}") # Debugging
     if not nifty_index_data.empty:
-        latest_nifty = nifty_index_data['Close'].iloc[-1]
-        previous_nifty = nifty_index_data['Close'].iloc[-2] if len(nifty_index_data) > 1 else None
-        change_nifty = latest_nifty - previous_nifty if previous_nifty is not None else 0
-        change_percent_nifty = (change_nifty / previous_nifty) * 100 if previous_nifty is not None and previous_nifty != 0 else 0
-        st.metric("Nifty 200", f"{latest_nifty:.2f}", f"{change_nifty:.2f} ({change_percent_nifty:.2f}%)" if previous_nifty is not None else None)
-    else:
-        st.warning("Could not fetch Nifty 200 index data.")
+    latest_nifty = nifty_index_data['Close'].iloc[-1]
+    previous_nifty = nifty_index_data['Close'].iloc[-2] if len(nifty_index_data) > 1 else None
+    change_nifty = latest_nifty - previous_nifty if previous_nifty is not None else 0
+    change_percent_nifty = (change_nifty / previous_nifty) * 100 if previous_nifty is not None and previous_nifty != 0 else 0
+    st.metric(
+        "Nifty 200",
+        f"{latest_nifty.item():.2f}" if isinstance(latest_nifty, pd.Series) and not latest_nifty.empty else f"{latest_nifty:.2f}" if isinstance(latest_nifty, (int, float)) else latest_nifty,
+        f"{change_nifty.item():.2f} ({change_percent_nifty.item():.2f}%)"
+        if previous_nifty is not None and isinstance(change_nifty, pd.Series) and not change_nifty.empty and isinstance(change_percent_nifty, pd.Series) and not change_percent_nifty.empty
+        else f"{change_nifty:.2f} ({change_percent_nifty:.2f}%)" if previous_nifty is not None and isinstance(change_nifty, (int, float)) and isinstance(change_percent_nifty, (int, float)) else None,
+    )
+else:
+    st.warning("Could not fetch Nifty 200 index data.")
 
     gainers_df, losers_df = get_top_gainers_losers(nifty200_data)
     print(f"Shape of gainers_df: {gainers_df.shape}") # Debugging
