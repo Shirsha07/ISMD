@@ -44,16 +44,19 @@ def fetch_data(tickers, period="3mo", interval="1d"):
     return data
 
 def calculate_indicators(df):
-    if df.empty:
+    if df.empty or 'Close' not in df.columns:
         return df
-    df['MACD'] = ta.trend.MACD(df['Close']).macd()
-    df['RSI'] = ta.momentum.RSIIndicator(df['Close']).rsi()
-    df['SMA_20'] = ta.trend.SMAIndicator(df['Close'], window=20).sma_indicator()
-    df['EMA_20'] = ta.trend.EMAIndicator(df['Close'], window=20).ema_indicator()
-    bb = ta.volatility.BollingerBands(df['Close'])
-    df['BB_upper'] = bb.bollinger_hband()
-    df['BB_lower'] = bb.bollinger_lband()
-    df['BB_mid'] = bb.bollinger_mavg()
+    try:
+        df['MACD'] = ta.trend.MACD(df['Close']).macd()
+        df['RSI'] = ta.momentum.RSIIndicator(df['Close']).rsi()
+        df['SMA_20'] = ta.trend.SMAIndicator(df['Close'], window=20).sma_indicator()
+        df['EMA_20'] = ta.trend.EMAIndicator(df['Close'], window=20).ema_indicator()
+        bb = ta.volatility.BollingerBands(df['Close'])
+        df['BB_upper'] = bb.bollinger_hband()
+        df['BB_lower'] = bb.bollinger_lband()
+        df['BB_mid'] = bb.bollinger_mavg()
+    except Exception as e:
+        print(f"Error calculating indicators: {e}")
     return df
 
 def check_upper_band_touch(df):
