@@ -60,7 +60,7 @@ def calculate_indicators(df):
     return df
 
 def check_upper_band_touch(df):
-    if df.empty or df['Close'].isnull().any() or df['BB_upper'].isnull().any():
+    if df.empty or 'Close' not in df.columns or 'BB_upper' not in df.columns or df['Close'].isnull().any() or df['BB_upper'].isnull().any():
         return False
     return df['Close'].iloc[-1] >= df['BB_upper'].iloc[-1]
 
@@ -92,6 +92,8 @@ def get_top_gainers_losers(data):
     return gainers_df, losers_df
 
 def plot_candlestick(df, ticker):
+    if df.empty or 'Open' not in df.columns or 'High' not in df.columns or 'Low' not in df.columns or 'Close' not in df.columns:
+        return go.Figure()
     fig = go.Figure(data=[go.Candlestick(x=df.index,
                     open=df['Open'],
                     high=df['High'],
@@ -101,6 +103,8 @@ def plot_candlestick(df, ticker):
     return fig
 
 def plot_indicators(df, ticker):
+    if df.empty or 'Close' not in df.columns or 'MACD' not in df.columns:
+        return make_subplots(rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.1, row_heights=[0.7, 0.3])
     fig = make_subplots(rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.1,
                         row_heights=[0.7, 0.3])
 
@@ -116,7 +120,7 @@ def plot_indicators(df, ticker):
 
 def display_security_info(ticker):
     stock_data = yf.download(ticker, period="1y", interval="1d")
-    if not stock_data.empty:
+    if isinstance(stock_data, pd.DataFrame) and not stock_data.empty and 'Close' in stock_data.columns:
         st.subheader(f"Security: {ticker.split('.')[0]}") # Display without '.NS'
         latest_info = stock_data.iloc[-1]
         previous_info = stock_data.iloc[-2] if len(stock_data) > 1 else None
@@ -139,7 +143,7 @@ def display_security_info(ticker):
         st.subheader("Historical Data")
         st.dataframe(stock_data.tail(10)) # Show last 10 days of data
     else:
-        st.error(f"Could not retrieve data for {ticker}")
+        st.error(f"Could not retrieve valid data for {ticker}")
 
 # --- Main Streamlit App ---
 
@@ -153,12 +157,15 @@ for ticker, data_item in nifty200_data.items():
     if isinstance(data_item, pd.Series):
         nifty200_data[ticker] = pd.DataFrame(data_item)
     elif not isinstance(data_item, pd.DataFrame) and data_item is not None:
-        # If it's not a DataFrame or None, try to create one (handle potential errors)
         try:
             nifty200_data[ticker] = pd.DataFrame(data_item)
         except Exception as e:
             print(f"Error converting data for {ticker}: {e}")
             nifty200_data[ticker] = pd.DataFrame() # Set to empty DataFrame on error
+    elif data_item is None:
+        nifty200_data[ticker] = pd.DataFrame() # Set to empty DataFrame if None
+
+print(f"Type of nifty200_data before the if statement: {type(nifty200_data)}")
 
 if bool(nifty200_data): # Explicitly check if the dictionary is non-empty
     st.subheader("Nifty 200 Overview")
@@ -204,12 +211,11 @@ if bool(nifty200_data): # Explicitly check if the dictionary is non-empty
             if not indicators.empty and len(indicators) > 0 and \
                indicators['MACD'].iloc[-1] > 0 and \
                indicators['RSI'].iloc[-1] > 50 and \
-               check_upper_band_touch(df.copy()) and \
-               ('EMA_20' in indicators.columns and 'SMA_20' in indicators.columns and indicators['EMA_20'].iloc[-1] > indicators['SMA_20'].iloc[-1]):
+               check_upper_band_touch(df.copy()) and \('EMA_20' in indicators.columns and 'SMA_20' in indicators.columns and indicators['EMA_20'].iloc[-1] > indicators['SMA_20'].iloc[-1]):
                 meeting_criteria_stocks.append(ticker)
 
     if meeting_criteria_stocks:
-        st.write("Stocks meeting the criteria (MACD > 0, RSI > 50, touching upper Bollinger Band, EMA > 20):")
+        st.write("Stocks meeting the criteria (MACD > 0, RSI > 50, touching upper Bollinger Band, EMA > SMA 20):")
         st.write(meeting_criteria_stocks)
     else:
         st.info("No stocks currently meet all the specified criteria based on the last available data.")
