@@ -9,156 +9,33 @@ from plotly.subplots import make_subplots
 
 def get_nifty200_tickers():
     return [
-        "ADANIENSOL.NS",
-        "ADANIENT.NS",
-        "ADANIPORTS.NS",
-        "ADANITRANS.NS",
-        "ALKEM.NS",
-        "AMBUJACEM.NS",
-        "APLLTD.NS",
-        "APOLLOHOSP.NS",
-        "AUROPHARMA.NS",
-        "AXISBANK.NS",
-        "BAJAJ-AUTO.NS",
-        "BAJAJFINSV.NS",
-        "BAJFINANCE.NS",
-        "BALKRISIND.NS",
-        "BANDHANBNK.NS",
-        "BANKBARODA.NS",
-        "BATAINDIA.NS",
-        "BEL.NS",
-        "BHARATFORG.NS",
-        "BHARTIARTL.NS",
-        "BIOCON.NS",
-        "BOSCHLTD.NS",
-        "BPCL.NS",
-        "BRITANNIA.NS",
-        "CANBK.NS",
-        "CHOLAFIN.NS",
-        "CIPLA.NS",
-        "COALINDIA.NS",
-        "COLPAL.NS",
-        "CONCOR.NS",
-        "CROMPTON.NS",
-        "DABUR.NS",
-        "DALBHARAT.NS",
-        "DIVISLAB.NS",
-        "DLF.NS",
-        "DMART.NS",
-        "DRREDDY.NS",
-        "EICHERMOT.NS",
-        "GAIL.NS",
-        "GLAND.NS",
-        "GODREJCP.NS",
-        "GODREJPROP.NS",
-        "GRASIM.NS",
-        "GUJGASLTD.NS",
-        "HAVELLS.NS",
-        "HCLTECH.NS",
-        "HDFC.NS",
-        "HDFCAMC.NS",
-        "HDFCBANK.NS",
-        "HDFCLIFE.NS",
-        "HEROMOTOCO.NS",
-        "HINDALCO.NS",
-        "HINDPETRO.NS",
-        "HINDUNILVR.NS",
-        "ICICIBANK.NS",
-        "ICICIGI.NS",
-        "ICICIPRULI.NS",
-        "IDBI.NS",
-        "IDFCFIRSTB.NS",
-        "IGL.NS",
-        "INDIGO.NS",
-        "INDUSINDBK.NS",
-        "INDUSTOWER.NS",
-        "INFY.NS",
-        "IOC.NS",
-        "IRCTC.NS",
-        "ITC.NS",
-        "JINDALSTEL.NS",
-        "JSWSTEEL.NS",
-        "JUBLFOOD.NS",
-        "KANSAINER.NS",
-        "KOTAKBANK.NS",
-        "L&TFH.NS",
-        "LALPATHLAB.NS",
-        "LICHSGFIN.NS",
-        "LT.NS",
-        "LTIM.NS",
-        "LUPIN.NS",
-        "M&M.NS",
-        "M&MFIN.NS",
-        "MANAPPURAM.NS",
-        "MARICO.NS",
-        "MARUTI.NS",
-        "MCDOWELL-N.NS",
-        "MCX.NS",
-        "METROBRAND.NS",
-        "MGL.NS",
-        "MINDTREE.NS",
-        "MPL.NS",
-        "MRF.NS",
-        "MUTHOOTFIN.NS",
-        "NAM-INDIA.NS",
-        "NATCOPHARM.NS",
-        "NAVINFLUOR.NS",
-        "NBCC.NS",
-        "NCC.NS",
-        "NESTLEIND.NS",
-        "NMDC.NS",
-        "NTPC.NS",
-        "OBEROIRLTY.NS",
-        "OFSS.NS",
-        "OIL.NS",
-        "ONGC.NS",
-        "PAGEIND.NS",
-        "PEL.NS",
-        "PETRONET.NS",
-        "PFC.NS",
-        "PIDILITIND.NS",
-        "PNB.NS",
-        "POLYCAB.NS",
-        "POWERGRID.NS",
-        "PRESTIGE.NS",
-        "PTC.NS",
-        "RAMCOCEM.NS",
-        "RBLBANK.NS",
-        "RECLTD.NS",
-        "RELIANCE.NS",
-        "SAIL.NS",
-        "SBICARD.NS",
-        "SBILIFE.NS",
-        "SBIN.NS",
-        "SHREECEM.NS",
-        "SIEMENS.NS",
-        "SRF.NS",
-        "SRTRANSFIN.NS",
-        "STARHEALTH.NS",
-        "SUNPHARMA.NS",
-        "SUNTV.NS",
-        "SUPREMEIND.NS",
-        "SYNGENE.NS",
-        "TATACHEM.NS",
-        "TATACONSUM.NS",
-        "TATAMOTORS.NS",
-        "TATAPOWER.NS",
-        "TATASTEEL.NS",
-        "TCS.NS",
-        "TECHM.NS",
-        "TITAN.NS",
-        "TORNTPHARM.NS",
-        "TORNTPOWER.NS",
-        "TRENT.NS",
-        "TVSMOTOR.NS",
-        "UBL.NS",
-        "ULTRACEMCO.NS",
-        "UPL.NS",
-        "VEDL.NS",
-        "VOLTAS.NS",
-        "WHIRLPOOL.NS",
-        "WIPRO.NS",
-        "YESBANK.NS",
+        "ADANIENSOL.NS", "ADANIENT.NS", "ADANIPORTS.NS", "ADANITRANS.NS", "ALKEM.NS",
+        "AMBUJACEM.NS", "APLLTD.NS", "APOLLOHOSP.NS", "AUROPHARMA.NS", "AXISBANK.NS",
+        "BAJAJ-AUTO.NS", "BAJAJFINSV.NS", "BAJFINANCE.NS", "BALKRISIND.NS", "BANDHANBNK.NS",
+        "BANKBARODA.NS", "BATAINDIA.NS", "BEL.NS", "BHARATFORG.NS", "BHARTIARTL.NS",
+        "BIOCON.NS", "BOSCHLTD.NS", "BPCL.NS", "BRITANNIA.NS", "CANBK.NS",
+        "CHOLAFIN.NS", "CIPLA.NS", "COALINDIA.NS", "COLPAL.NS", "CONCOR.NS",
+        "CROMPTON.NS", "DABUR.NS", "DALBHARAT.NS", "DIVISLAB.NS", "DLF.NS",
+        "DMART.NS", "DRREDDY.NS", "EICHERMOT.NS", "GAIL.NS", "GLAND.NS",
+        "GODREJCP.NS", "GODREJPROP.NS", "GRASIM.NS", "GUJGASLTD.NS", "HAVELLS.NS",
+        "HCLTECH.NS", "HDFC.NS", "HDFCAMC.NS", "HDFCBANK.NS", "HDFCLIFE.NS",
+        "HEROMOTOCO.NS", "HINDALCO.NS", "HINDPETRO.NS", "HINDUNILVR.NS", "ICICIBANK.NS",
+        "ICICIGI.NS", "ICICIPRULI.NS", "IDBI.NS", "IDFCFIRSTB.NS", "IGL.NS", "INDIGO.NS",
+        "INDUSINDBK.NS", "INDUSTOWER.NS", "INFY.NS", "IOC.NS", "IRCTC.NS", "ITC.NS",
+        "JINDALSTEL.NS", "JSWSTEEL.NS", "JUBLFOOD.NS", "KANSAINER.NS", "KOTAKBANK.NS",
+        "L&TFH.NS", "LALPATHLAB.NS", "LICHSGFIN.NS", "LT.NS", "LTIM.NS", "LUPIN.NS",
+        "M&M.NS", "M&MFIN.NS", "MANAPPURAM.NS", "MARICO.NS", "MARUTI.NS", "MCDOWELL-N.NS",
+        "MCX.NS", "METROBRAND.NS", "MGL.NS", "MINDTREE.NS", "MPL.NS", "MRF.NS",
+        "MUTHOOTFIN.NS", "NAM-INDIA.NS", "NATCOPHARM.NS", "NAVINFLUOR.NS", "NBCC.NS", "NCC.NS",
+        "NESTLEIND.NS", "NMDC.NS", "NTPC.NS", "OBEROIRLTY.NS", "OFSS.NS", "OIL.NS",
+        "ONGC.NS", "PAGEIND.NS", "PEL.NS", "PETRONET.NS", "PFC.NS", "PIDILITIND.NS",
+        "PNB.NS", "POLYCAB.NS", "POWERGRID.NS", "PRESTIGE.NS", "PTC.NS", "RAMCOCEM.NS",
+        "RBLBANK.NS", "RECLTD.NS", "RELIANCE.NS", "SAIL.NS", "SBICARD.NS", "SBILIFE.NS",
+        "SBIN.NS", "SHREECEM.NS", "SIEMENS.NS", "SRF.NS", "SRTRANSFIN.NS", "STARHEALTH.NS",
+        "SUNPHARMA.NS", "SUNTV.NS", "SUPREMEIND.NS", "SYNGENE.NS", "TATACHEM.NS", "TATACONSUM.NS",
+        "TATAMOTORS.NS", "TATAPOWER.NS", "TATASTEEL.NS", "TCS.NS", "TECHM.NS", "TITAN.NS",
+        "TORNTPHARM.NS", "TORNTPOWER.NS", "TRENT.NS", "TVSMOTOR.NS", "UBL.NS", "ULTRACEMCO.NS",
+        "UPL.NS", "VEDL.NS", "VOLTAS.NS", "WHIRLPOOL.NS", "WIPRO.NS", "YESBANK.NS",
         "ZYDUSLIFE.NS"
     ]
 
@@ -180,13 +57,18 @@ def calculate_indicators(df):
     return df
 
 def check_upper_band_touch(df):
-    if df.empty or df.iloc[-1]['Close'] is None or df.iloc[-1]['BB_upper'] is None:
+    if df.empty or df['Close'].isnull().any() or df['BB_upper'].isnull().any():
         return False
-    return df.iloc[-1]['Close'] >= df.iloc[-1]['BB_upper']
+    return df['Close'].iloc[-1] >= df['BB_upper'].iloc[-1]
 
 def get_top_gainers_losers(data):
-    latest_data = {ticker: df.iloc[-1]['Close'] for ticker, df in data.items() if not df.empty and 'Close' in df.columns and not df.iloc[-1].isnull().any()}
-    previous_data = {ticker: df.iloc[-2]['Close'] for ticker, df in data.items() if len(df) >= 2 and 'Close' in df.columns and not df.iloc[-2].isnull().any()}
+    latest_data = {}
+    previous_data = {}
+    for ticker, df in data.items():
+        if not df.empty and 'Close' in df.columns:
+            if len(df) >= 2 and not df.iloc[-1]['Close'] is None and not df.iloc[-2]['Close'] is None:
+                latest_data[ticker] = df.iloc[-1]['Close']
+                previous_data[ticker] = df.iloc[-2]['Close']
 
     if not latest_data or not previous_data:
         return pd.DataFrame(), pd.DataFrame()
@@ -233,7 +115,10 @@ def display_security_info(ticker):
     if not stock_data.empty:
         st.subheader(f"Security: {ticker.split('.')[0]}") # Display without '.NS'
         latest_info = stock_data.iloc[-1]
-        st.metric("Latest Price", f"{latest_info['Close']:.2f} INR", f"{latest_info['Close'] - stock_data.iloc[-2]['Close']:.2f} ({((latest_info['Close'] - stock_data.iloc[-2]['Close']) / stock_data.iloc[-2]['Close']) * 100:.2f}%)" if len(stock_data) > 1 else None)
+        previous_info = stock_data.iloc[-2] if len(stock_data) > 1 else None
+        change = latest_info['Close'] - previous_info['Close'] if previous_info is not None else 0
+        change_percent = (change / previous_info['Close']) * 100 if previous_info is not None and previous_info['Close'] != 0 else 0
+        st.metric("Latest Price", f"{latest_info['Close']:.2f} INR", f"{change:.2f} ({change_percent:.2f}%)" if previous_info is not None else None)
 
         col1, col2, col3 = st.columns(3)
         col1.metric("High", f"{latest_info['High']:.2f} INR")
@@ -259,13 +144,15 @@ st.title("Interactive Nifty 200 Stock Market Dashboard")
 nifty200_tickers = get_nifty200_tickers()
 nifty200_data = fetch_data(nifty200_tickers, period="3mo", interval="1d") # Adjust period as needed
 
-if nifty200_data:
+if not nifty200_data.empty:
     st.subheader("Nifty 200 Overview")
-    # **TODO:** Implement display of key Nifty 200 index information here
-    # You might need to fetch data for the ^NSEI ticker for the index itself.
     nifty_index_data = yf.download("^NSEI", period="1d", interval="1d")
     if not nifty_index_data.empty:
-        st.metric("Nifty 200", f"{nifty_index_data['Close'].iloc[-1]:.2f}", f"{nifty_index_data['Close'].iloc[-1] - nifty_index_data['Close'].iloc[-2]:.2f} ({((nifty_index_data['Close'].iloc[-1] - nifty_index_data['Close'].iloc[-2]) / nifty_index_data['Close'].iloc[-2]) * 100:.2f}%)" if len(nifty_index_data) > 1 else None)
+        latest_nifty = nifty_index_data['Close'].iloc[-1]
+        previous_nifty = nifty_index_data['Close'].iloc[-2] if len(nifty_index_data) > 1 else None
+        change_nifty = latest_nifty - previous_nifty if previous_nifty is not None else 0
+        change_percent_nifty = (change_nifty / previous_nifty) * 100 if previous_nifty is not None and previous_nifty != 0 else 0
+        st.metric("Nifty 200", f"{latest_nifty:.2f}", f"{change_nifty:.2f} ({change_percent_nifty:.2f}%)" if previous_nifty is not None else None)
     else:
         st.warning("Could not fetch Nifty 200 index data.")
 
@@ -285,14 +172,18 @@ if nifty200_data:
     for ticker, df in nifty200_data.items():
         if not df.empty:
             indicators = calculate_indicators(df.copy())
-            if not indicators.empty and indicators.iloc[-1]['MACD'] > 0 and indicators.iloc[-1]['RSI'] > 50 and check_upper_band_touch(df.copy()) and indicators.iloc[-1]['EMA_20'] > indicators.iloc[-1]['SMA_20']: # Using SMA_20 as a proxy
+            if not indicators.empty and len(indicators) > 0 and \
+               indicators['MACD'].iloc[-1] > 0 and \
+               indicators['RSI'].iloc[-1] > 50 and \
+               check_upper_band_touch(df.copy()) and \
+               indicators['EMA_20'].iloc[-1] > indicators['SMA_20'].iloc[-1]:
                 meeting_criteria_stocks.append(ticker)
 
     if meeting_criteria_stocks:
         st.write("Stocks meeting the criteria (MACD > 0, RSI > 50, touching upper Bollinger Band, EMA > 20):")
         st.write(meeting_criteria_stocks)
     else:
-        st.info("No stocks currently meet all the specified criteria.")
+        st.info("No stocks currently meet all the specified criteria based on the last available data.")
 
     st.sidebar.header("Security Analysis")
     selected_ticker = st.sidebar.selectbox("Choose a Nifty 200 Stock", [""] + [t.split('.')[0] for t in nifty200_tickers]) # Display without '.NS'
