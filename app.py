@@ -145,7 +145,19 @@ st.title("Interactive Nifty 200 Stock Market Dashboard")
 nifty200_tickers = get_nifty200_tickers()
 nifty200_data = fetch_data(nifty200_tickers, period="3mo", interval="1d") # Adjust period as needed
 
-if not nifty200_data.empty:
+# Explicitly convert each item in nifty200_data to a DataFrame
+for ticker, data_item in nifty200_data.items():
+    if isinstance(data_item, pd.Series):
+        nifty200_data[ticker] = pd.DataFrame(data_item)
+    elif not isinstance(data_item, pd.DataFrame) and data_item is not None:
+        # If it's not a DataFrame or None, try to create one (handle potential errors)
+        try:
+            nifty200_data[ticker] = pd.DataFrame(data_item)
+        except Exception as e:
+            print(f"Error converting data for {ticker}: {e}")
+            nifty200_data[ticker] = pd.DataFrame() # Set to empty DataFrame on error
+
+if nifty200_data: # Check if the dictionary itself is not empty
     st.subheader("Nifty 200 Overview")
     nifty_index_data = yf.download("^NSEI", period="1d", interval="1d")
     if not nifty_index_data.empty:
@@ -181,7 +193,7 @@ if not nifty200_data.empty:
     st.subheader("Nifty 200 Stocks Meeting Criteria")
     meeting_criteria_stocks = []
     for ticker, df in nifty200_data.items():
-        if not df.empty:
+        if isinstance(df, pd.DataFrame) and not df.empty:
             indicators = calculate_indicators(df.copy())
             if not indicators.empty and len(indicators) > 0 and \
                indicators['MACD'].iloc[-1] > 0 and \
