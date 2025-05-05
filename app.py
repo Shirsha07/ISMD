@@ -64,11 +64,12 @@ def check_upper_band_touch(df):
 def get_top_gainers_losers(data):
     latest_data = {}
     previous_data = {}
-    for ticker, df in data.items():
-        if isinstance(df, pd.DataFrame) and not df.empty and 'Close' in df.columns:
-            if len(df) >= 2 and not df.iloc[-1]['Close'] is None and not df.iloc[-2]['Close'] is None:
-                latest_data[ticker] = df.iloc[-1]['Close']
-                previous_data[ticker] = df.iloc[-2]['Close']
+    for ticker, item in data.items():
+        if isinstance(item, pd.DataFrame) and not item.empty and 'Close' in item.columns and len(item) >= 2:
+            close_series = item['Close'].dropna()
+            if len(close_series) >= 2:
+                latest_data[ticker] = close_series.iloc[-1]
+                previous_data[ticker] = close_series.iloc[-2]
 
     if not latest_data or not previous_data:
         return pd.DataFrame(), pd.DataFrame()
@@ -77,7 +78,7 @@ def get_top_gainers_losers(data):
     losers_data = []
 
     for ticker, latest_price in latest_data.items():
-        if ticker in previous_data and previous_data[ticker] != 0:
+        if ticker in previous_data and previous_data[ticker] is not None and previous_data[ticker] != 0 and latest_price is not None:
             change_percentage = ((latest_price - previous_data[ticker]) / previous_data[ticker]) * 100
             gainers_data.append({'Ticker': ticker, 'Change (%)': change_percentage})
             losers_data.append({'Ticker': ticker, 'Change (%)': change_percentage})
