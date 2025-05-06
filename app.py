@@ -211,9 +211,13 @@ if bool(nifty200_data): # Explicitly check if the dictionary is non-empty
             if not indicators.empty and len(indicators) > 0 and \
                indicators['MACD'].iloc[-1] > 0 and \
                indicators['RSI'].iloc[-1] > 50 and \
-               check_upper_band_touch(df.copy()) and \('EMA_20' in indicators.columns and 'SMA_20' in indicators.columns and indicators['EMA_20'].iloc[-1] > indicators['SMA_20'].iloc[-1]):
+               check_upper_band_touch(df.copy()) and \
+               (
+                   'EMA_20' in indicators.columns and
+                   'SMA_20' in indicators.columns and
+                   indicators['EMA_20'].iloc[-1] > indicators['SMA_20'].iloc[-1]
+               ):
                 meeting_criteria_stocks.append(ticker)
-
     if meeting_criteria_stocks:
         st.write("Stocks meeting the criteria (MACD > 0, RSI > 50, touching upper Bollinger Band, EMA > SMA 20):")
         st.write(meeting_criteria_stocks)
