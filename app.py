@@ -166,6 +166,14 @@ for ticker, data_item in nifty200_data.items():
         nifty200_data[ticker] = pd.DataFrame() # Set to empty DataFrame if None
 
 print(f"Type of nifty200_data before the if statement: {type(nifty200_data)}")
+if isinstance(nifty200_data, dict):
+    print("nifty200_data is a dictionary.")
+    for key, value in nifty200_data.items():
+        print(f"  Key: {key}, Type: {type(value)}")
+elif isinstance(nifty200_data, pd.DataFrame):
+    print("nifty200_data is a DataFrame.")
+else:
+    print(f"nifty200_data is of an unexpected type: {type(nifty200_data)}")
 
 if bool(nifty200_data): # Explicitly check if the dictionary is non-empty
     st.subheader("Nifty 200 Overview")
