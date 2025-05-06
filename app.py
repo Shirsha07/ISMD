@@ -41,17 +41,22 @@ def get_nifty200_tickers():
 
 def fetch_data(tickers, period="3mo", interval="1d"):
     # Explicitly convert each item in nifty200_data to a DataFrame
-for ticker, data_item in nifty200_data.items():
-    if isinstance(data_item, pd.Series):
-        nifty200_data[ticker] = pd.DataFrame(data_item)
-    elif not isinstance(data_item, pd.DataFrame) and data_item is not None:
-        try:
+def process_nifty_data(nifty200_data):
+    for ticker, data_item in nifty200_data.items():
+        if isinstance(data_item, pd.Series):
             nifty200_data[ticker] = pd.DataFrame(data_item)
-        except Exception as e:
-            print(f"Error converting data for {ticker}: {e}")
-            nifty200_data[ticker] = pd.DataFrame() # Set to empty DataFrame on error
-    elif data_item is None:
-        nifty200_data[ticker] = pd.DataFrame() # Set to empty DataFrame if None
+        elif not isinstance(data_item, pd.DataFrame) and data_item is not None:
+            try:
+                nifty200_data[ticker] = pd.DataFrame(data_item)
+            except Exception as e:
+                print(f"Error converting data for {ticker}: {e}")
+                nifty200_data[ticker] = pd.DataFrame() # Set to empty DataFrame on error
+        elif data_item is None:
+            nifty200_data[ticker] = pd.DataFrame() # Set to empty DataFrame if None
+    return nifty200_data
+
+nifty200_data = fetch_data(nifty200_tickers, period="3mo", interval="1d") # Adjust period as needed
+nifty200_data = process_nifty_data(nifty200_data)
 
 print(f"Type of nifty200_data before the if statement: {type(nifty200_data)}")
 if isinstance(nifty200_data, dict):
