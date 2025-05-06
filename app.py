@@ -41,22 +41,22 @@ def get_nifty200_tickers():
 
 def fetch_data(tickers, period="3mo", interval="1d"):
     data = yf.download(tickers, period=period, interval=interval)
-    return {ticker: data.loc[:, (ticker,)] if isinstance(tickers, list) else data for ticker in tickers}
-
-def process_nifty_data(nifty200_data):
-    for ticker, data_item in nifty200_data.items():
-        if isinstance(data_item, pd.Series):
-            processed_data[ticker] = pd.DataFrame(data_item)
-        elif not isinstance(data_item, pd.DataFrame) and data_item is not None:
-            try:
-                processed_data[ticker] = pd.DataFrame(data_item)
-            except Exception as e:
-                print(f"Error converting data for {ticker}: {e}")
-                processed_data[ticker] = pd.DataFrame() # Set to empty DataFrame on error
-        elif data_item is None:
-            processed_data[ticker] = pd.DataFrame() # Set to empty DataFrame if None
+    processed_data = {}
+    for ticker in tickers:
+        if ticker in data.columns:
+            processed_data[ticker] = data[ticker]
         else:
-            processed_data[ticker] = data_item # Keep as is if already DataFrame
+            print(f"Warning: Data not found for ticker {ticker}")
+            processed_data[ticker] = pd.DataFrame()  # Return an empty DataFrame if data is missing
+    return processed_data
+def process_nifty_data(nifty200_data):
+    processed_data = {}
+    for ticker, data_item in nifty200_data.items():
+        if isinstance(data_item, pd.DataFrame) and not data_item.empty:
+            processed_data[ticker] = data_item
+        else:
+            print(f"Warning: No valid DataFrame for ticker {ticker}")
+            processed_data[ticker] = pd.DataFrame()
     return processed_data
 
 nifty200_tickers = get_nifty200_tickers()
