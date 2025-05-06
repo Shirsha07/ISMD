@@ -40,8 +40,34 @@ def get_nifty200_tickers():
     ]
 
 def fetch_data(tickers, period="3mo", interval="1d"):
-    data = yf.download(tickers, period=period, interval=interval, group_by="ticker")
-    return data
+    for ticker, data_item in nifty200_data.items():
+    if isinstance(data_item, pd.Series):
+        nifty200_data[ticker] = pd.DataFrame(data_item)
+    elif not isinstance(data_item, pd.DataFrame) and data_item is not None:
+        try:
+            nifty200_data[ticker] = pd.DataFrame(data_item)
+        except Exception as e:
+            print(f"Error converting data for {ticker}: {e}")
+            nifty200_data[ticker] = pd.DataFrame() # Set to empty DataFrame on error
+    elif data_item is None:
+        nifty200_data[ticker] = pd.DataFrame() # Set to empty DataFrame if None
+
+print(f"Type of nifty200_data before the if statement: {type(nifty200_data)}")
+if isinstance(nifty200_data, dict):
+    print("nifty200_data is a dictionary.")
+    for key, value in nifty200_data.items():
+        print(f"  Key: {key}, Type: {type(value)}")
+elif isinstance(nifty200_data, pd.DataFrame):
+    print("nifty200_data is a DataFrame.")
+else:
+    print(f"nifty200_data is of an unexpected type: {type(nifty200_data)}")
+
+if bool(nifty200_data): # Explicitly check if the dictionary is non-empty
+    st.subheader("Nifty 200 Overview")
+    # ... rest of your code
+else:
+    st.error("Failed to fetch data for Nifty 200 stocks.")
+
 
 def calculate_indicators(df):
     if df.empty or 'Close' not in df.columns:
