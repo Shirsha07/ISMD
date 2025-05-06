@@ -40,15 +40,17 @@ def get_nifty200_tickers():
     ]
 
 def fetch_data(tickers, period="3mo", interval="1d"):
-    data = yf.download(tickers, period=period, interval=interval)
-    processed_data = {}
+    data = yf.download(tickers, period=period, interval=interval, group_by='ticker', auto_adjust=True, threads=True)
+    result = {}
     for ticker in tickers:
-        if ticker in data.columns:
-            processed_data[ticker] = data[ticker]
-        else:
-            print(f"Warning: Data not found for ticker {ticker}")
-            processed_data[ticker] = pd.DataFrame()  # Return an empty DataFrame if data is missing
-    return processed_data
+        try:
+            if isinstance(data.columns, pd.MultiIndex):
+                result[ticker] = data[ticker]
+            else:
+                result[ticker] = data
+        except KeyError:
+            print(f"Data for {ticker} not found or could not be fetched.")
+    return result
 def process_nifty_data(nifty200_data):
     processed_data = {}
     for ticker, data_item in nifty200_data.items():
